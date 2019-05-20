@@ -19,6 +19,7 @@
 		5046A496228D81B5003ECCF0 /* ScoreLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5046A495228D81B5003ECCF0 /* ScoreLabel.swift */; };
 		5046A498228E66A3003ECCF0 /* Ball.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5046A497228E66A3003ECCF0 /* Ball.swift */; };
 		5046A49A228E69FD003ECCF0 /* GameLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5046A499228E69FD003ECCF0 /* GameLogic.swift */; };
+		5046A49C22927D1A003ECCF0 /* PlayerLife.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5046A49B22927D1A003ECCF0 /* PlayerLife.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		5046A495228D81B5003ECCF0 /* ScoreLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreLabel.swift; sourceTree = "<group>"; };
 		5046A497228E66A3003ECCF0 /* Ball.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ball.swift; sourceTree = "<group>"; };
 		5046A499228E69FD003ECCF0 /* GameLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLogic.swift; sourceTree = "<group>"; };
+		5046A49B22927D1A003ECCF0 /* PlayerLife.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerLife.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				5046A48D228ADCAC003ECCF0 /* Info.plist */,
 				5046A493228ADE25003ECCF0 /* racket.swift */,
 				5046A495228D81B5003ECCF0 /* ScoreLabel.swift */,
+				5046A49B22927D1A003ECCF0 /* PlayerLife.swift */,
 				5046A497228E66A3003ECCF0 /* Ball.swift */,
 				5046A499228E69FD003ECCF0 /* GameLogic.swift */,
 			);
@@ -158,6 +161,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5046A49C22927D1A003ECCF0 /* PlayerLife.swift in Sources */,
 				5046A498228E66A3003ECCF0 /* Ball.swift in Sources */,
 				5046A482228ADCAA003ECCF0 /* GameScene.swift in Sources */,
 				5046A494228ADE25003ECCF0 /* racket.swift in Sources */,

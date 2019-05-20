@@ -44,6 +44,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ball.position = center
         return ball
     }()
+    lazy var lifeLabel: PlayerLife = {
+        let life = PlayerLife(5)
+        life.label.position = CGPoint(x: size.width - 80, y: 40)
+        life.label.zPosition = 1
+        return life
+    }()
     var playerX: CGFloat {
         get {
             return player.position.x
@@ -72,6 +78,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             opponent.position.x = newX
         }
     }
+    lazy var startGameLabel: SKLabelNode = {
+        let label = SKLabelNode(text: "touch screen to start new game")
+        label.horizontalAlignmentMode = .center
+        label.position = CGPoint(x: size.width/2, y: size.height/2+50)
+        label.fontSize = 38
+        label.fontColor = UIColor.red
+        label.zPosition = -3
+        return label
+    }()
+    lazy var endGameLabel: SKLabelNode = {
+        let label = SKLabelNode(text: "your score: \(playerScore.score)")
+        label.horizontalAlignmentMode = .center
+        label.position = CGPoint(x: size.width/2, y: size.height/2-50)
+        label.fontSize = 38
+        label.fontColor = UIColor.red
+        label.zPosition = -3
+        return label
+    }()
     
     var ballDirectonTo: RacketOwner?
     
@@ -82,15 +106,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(player)
         addChild(opponent)
         addChild(playerScore.label)
+        addChild(lifeLabel.label)
         addChild(ball)
+        addChild(startGameLabel)
+        addChild(endGameLabel)
         
-        startGame()
+        waitForStartGame()
     }
     
+    var gameState :GameState = .waitToStart
+    
     func startGame() {
+        startGameLabel.zPosition = -4
+        endGameLabel.zPosition = -4
+        gameState = .process
         skillLevel = 5
         contactLevel = 0
         playerScore.score = 0
+        playerLife = 5
         player.position = CGPoint(x: size.width/2, y: emptyZone)
         opponent.position = CGPoint(x: size.width/2, y: size.height-emptyZone+15)
         startBall()
@@ -109,7 +142,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func endGame() {
-        
+        endGameLabel.zPosition = 3
+        endGameLabel.text = "your score: \(playerScore.score)"
+        waitForStartGame()
+    }
+    func waitForStartGame() {
+        startGameLabel.zPosition = 2
+        gameState = .waitToStart
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -120,6 +159,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if sortedNodes[1].name == RacketOwner.player.rawValue {
             contactLevel += 1
+            playerScore.score += 1
             if contactLevel % 10 == 0 {
                 //növeljük a labda sebességét
                 ball.physicsBody?.velocity.dy += 2
@@ -142,10 +182,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var skillLevel:CGFloat = 5
     var contactLevel:Int = 0
-    var playerLife:Int = 5
+    var playerLife:Int = 5 {
+        didSet {
+            lifeLabel.life = playerLife
+        }
+    }
     
     override func didSimulatePhysics() {
         //Tells your app to peform any necessary logic after physics simulations are performed.
+        if gameState == .waitToStart {
+            return
+        }
         if ball.position.x <= 70 || ball.position.x >= size.width-70 {
             ball.physicsBody?.velocity.dx *= -1
         }
@@ -156,10 +203,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             opponentX -= skillLevel
         }
         if ball.position.y >= size.height {
-            playerScore.score += 1
+            playerScore.score += 100
             startBall()
         } else if ball.position.y <= 0 {
             if playerLife == 1 {
+                playerLife = 0
                 endGame()
             } else {
                 playerLife -= 1
@@ -170,13 +218,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+        if gameState == .waitToStart {
+            startGame()
+        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches {
-            let location = touch.location(in: self)
-            playerX = location.x
+        if gameState == .waitToStart {
+           startGame()
+        } else {
+           for touch in touches {
+                let location = touch.location(in: self)
+                playerX = location.x
+            }
         }
     }
     
